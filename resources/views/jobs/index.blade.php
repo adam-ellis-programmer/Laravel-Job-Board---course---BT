@@ -2,14 +2,11 @@
   <h1>Avalable Jobs</h1>
   <ul>
     <ul>
-      @forelse($jobs as $job)
-      @if($loop->first)
-      <li>First: {{ $job }}</li>
-      @else
-      <li>{{ $job }}</li>
-      @endif
-      @empty
-      <li>No Jobs Found</li>
-      @endforelse
+      @forElse ($jobs as $job)
+      <li>{{$job->title}} -- {{$job->description}} </li>
+          @empty
+          <li>none found</li>
+      @endforElse
     </ul>
   </x-layout>
+4

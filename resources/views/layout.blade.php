@@ -6,16 +6,23 @@
     <title>{{$title ?? 'Workopia'}}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite('resources/css/app.css')
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
   </head>
   
   <body class="bg-gray-100">
     <x-header />
-    <h1 class="text-2xl bg-blue-500 w-sm m-auto flex justify-center text-white >layout comp</h1>
+
+    @if(request()->is('/'))
+    <x-hero />
+    <x-top-banner />
+  @endif
+
     <main class="container mx-auto p-4 mt-4">
       {{ $slot }}
     </main>
     {{-- asset allows us to access the public folder --}}
     <script src="{{ asset('js/script.js') }}"></script>
   </body>
+
   
   </html>
