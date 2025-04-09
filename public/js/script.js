@@ -1,8 +1,8 @@
-document.querySelector("#hamburger").addEventListener("click", function () {
-    const menu = document.getElementById("mobile-menu");
-    menu.classList.toggle("hidden");
-    console.log("hello");
-});
+// document.querySelector("#hamburger").addEventListener("click", function () {
+//     const menu = document.getElementById("mobile-menu");
+//     menu.classList.toggle("hidden");
+//     console.log("hello");
+// });
 
 const test = {
     name: "Sally",

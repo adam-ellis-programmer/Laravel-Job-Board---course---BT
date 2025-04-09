@@ -1,18 +1,15 @@
 <x-layout>
-  <h1>Avalable Jobs</h1>
-  <ul>
-    <ul>
-      @forElse ($jobs as $job)
-      <li>
-        
-        {{-- url OR route helper --}}
-        {{-- unless in a nav use route helper --}}
-        <a href="{{ route('jobs.show', $job->id) }}">
-          {{ $job->title }}
-        </a>
-          @empty
-          <li>none found</li>
-      @endforElse
-    </ul>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+
+    @forelse($jobs as $job)
+
+    <x-job-card :job="$job" />
+
+    @empty
+    <p>No jobs found</p>
+    @endforelse
+  </div>
+
   </x-layout>
 
