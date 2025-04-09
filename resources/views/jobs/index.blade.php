@@ -3,10 +3,16 @@
   <ul>
     <ul>
       @forElse ($jobs as $job)
-      <li>{{$job->title}} -- {{$job->description}} </li>
+      <li>
+        
+        {{-- url OR route helper --}}
+        {{-- unless in a nav use route helper --}}
+        <a href="{{ route('jobs.show', $job->id) }}">
+          {{ $job->title }}
+        </a>
           @empty
           <li>none found</li>
       @endforElse
     </ul>
   </x-layout>
-4
+

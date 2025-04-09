@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 use App\Models\Job;
+
 class JobController extends Controller
 {
     /**
@@ -35,21 +37,36 @@ class JobController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): string 
+    public function store(Request $request): RedirectResponse
     {
-        //
-        return 'store';
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+    
+        // Create a new job listing with the validated data
+        Job::create([
+            'title' => $validatedData['title'],
+            'description' => $validatedData['description'],
+        ]);
+    
+        return redirect()->route('jobs.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id): string
+    // Model binding, allows us to type hint 
+    // a model in a conteoller method
+    // laravel fetches the model from the database based on this param
+    // Returns a view
+    // takes in the job with model binding 
+    // we return the view and pass that job in
+    public function show(Job $job): View
     {
-        //
-        return 'show';
+        return view('jobs.show', compact('job'));
     }
-
     /**
      * Show the form for editing the specified resource.
      */

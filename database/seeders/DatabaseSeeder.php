@@ -6,6 +6,9 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+use Illuminate\Support\Facades\DB;
+
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -13,11 +16,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+     // Truncate tables == CLEAR ALL DATA before we seed
+     DB::table('job_listings')->truncate();
+     DB::table('users')->truncate();
+ 
+    //  What $this->call() does is run another seeder class from within the current seeder. 
+    // Selectively run certain seeders when needed
+     $this->call(RandomUserSeeder::class);
+     $this->call(JobSeeder::class);
     }
 }
