@@ -11,5 +11,4 @@
     @endforelse
   </div>
 
-  </x-layout>
-
+</x-layout>

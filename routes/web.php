@@ -5,37 +5,24 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\JobController; // nameSpace
 use App\Http\Controllers\HomeController;
 
-// route links controller file to method such as index, show, emial, etc
-// resource is [posts,users,accounts,customers,agents,]
-// we can then call CURD operations on these methods
 
-// compact('jobs') from the controller to the view
+use App\Http\Controllers\auth\RegisterController;
+use App\Http\Controllers\auth\LoginController;
 
-// linking routes to controller methods
-// This is a powerful shortcut that creates multiple routes for CRUD operations
+use App\Http\Middleware\LogRequest;
+// Route::get('/', [HomeController::class, 'index'])->name('home')->middleware(LogRequest::class);
 
-// home route is seperate
-Route::get('/', [HomeController::class, 'index']);
+// seperate route to jobs
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::resource('jobs', JobController::class); // /jobs
+Route::get('/jobs/{id}/save', [JobController::class, 'save'])->name('jobs.save'); // /jobs/:id
 
+// auth routes >--------------------------------------------------------------------------
+Route::get('/register', [RegisterController::class, 'register'])->name('register');
+Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+Route::get('/login', [LoginController::class, 'login'])->name('login');
+Route::post('/login', [LoginController::class, 'authenticate'])->name('login.authenticate');
 
-// Programmatically creates all our routes for jobs routes
-// if we need to add other routes we add manually  -->Route::get('/jobs/admin',[JobController::class, 'admin']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::resource('jobs', JobController::class);
-
-// Route::get('/jobs',[JobController::class, 'index']);
-// Route::get('/jobs/create', [JobController::class,'create']);
-
-// // id routes need to be last -- routes need to be in order
-// Route::get('/jobs/{id}', [JobController::class, 'show']);
-// Route::post('/jobs', [JobController::class, 'store']);
-
-
-// Route::get('/jobs', function () {
-//         return view('jobs');
-// })->name('jobs');
-
-
-
-
-
+// add admin routes --
