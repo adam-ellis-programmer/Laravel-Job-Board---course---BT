@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Job extends Model
 {
     use HasFactory;
 
     protected $table = 'job_listings';
-    
+
     // mass asignment - prevents users modifying collumns
     protected $fillable = [
         'title',
@@ -39,7 +40,19 @@ class Job extends Model
     // job belongs to the user
     public function user(): BelongsTo
     {
-    return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
+    }
+
+
+    // now we can use $job->bookMarkedByUsers and retrieve the users that bookmarked that job
+    // bookmarks can be bookmarked by multiple users 
+    // every time a user bookmarks a card
+    // that data goes in the job_users_bookmarks table
+    // we retrieve all the ids of the bookmarks belonging to that user 
+    // $job->bookMarkedByUsers
+    public function bookmarkedByUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'job_user_bookmarks')->withTimestamps();
     }
 }
  
