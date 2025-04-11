@@ -51,6 +51,7 @@
     </div>
     <x-button-link url="/jobs/create" textClass="text-white" icon="edit" :block='true'>Create Job</x-button-link>
     @else
+    <x-nav-link url="/jobs" :active="request()->is('jobs')" :mobile="true">All Jobs</x-nav-link>
     <x-nav-link url="/register" :active="request()->is('register')" :mobile="true">Register</x-nav-link>
     <x-nav-link url="/login" :active="request()->is('login')" :mobile="true">Login</x-nav-link>
     @endAuth

@@ -5,14 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
-use App\Models\Job;
+
+use Illuminate\Support\Facades\Auth;
 
 // to handlel delete old file 
 use Illuminate\Support\Facades\Storage;
 
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+use App\Models\Job;
+
 class JobController extends Controller
 {
-
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
@@ -37,8 +42,12 @@ class JobController extends Controller
 
     // @desc  create job
     // @route POST /jobs/create
-    public function create(): View
+    public function create(): View | RedirectResponse
     {
+        // if (!Auth::check()) {
+        //     return redirect()->route('login');
+        // }
+
         return view('jobs.create');
     }
 
@@ -89,7 +98,8 @@ class JobController extends Controller
         // ]);
 
         // Add the hardcoded user_id
-        $validatedData['user_id'] = 1;
+        // $validatedData['user_id'] = auth()->user()->id; // is correct but gets warning
+        $validatedData['user_id'] = Auth::user()->id;
 
         // Check if a file was uploaded
         if ($request->hasFile('company_logo')) {
@@ -130,6 +140,10 @@ class JobController extends Controller
      */
     public function edit(Job $job): View
     {
+        // Check if the user is authorized
+        $this->authorize('update', $job);
+
+
         // ** Model Binding --> with $job
         return view('jobs.edit')->with('job', $job);
     }
@@ -140,6 +154,11 @@ class JobController extends Controller
 
     public function update(Request $request,  Job $job): RedirectResponse
     {
+
+        // Check if the user is authorized
+        $this->authorize('update', $job);
+
+
         // Validate the incoming request data
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
@@ -190,6 +209,11 @@ class JobController extends Controller
     // Model Binding
     public function destroy(Job $job): RedirectResponse
     {
+
+        // Check if the user is authorized
+        $this->authorize('delete', $job);
+
+
         // If there is a company logo, delete it from storage
         if ($job->company_logo) {
             // . concat
