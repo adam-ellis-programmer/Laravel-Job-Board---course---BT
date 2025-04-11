@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar',
     ];
 
     /**
@@ -50,7 +51,7 @@ class User extends Authenticatable
     // one to many -- One user hase many jobs
     public function jobListings(): HasMany
     {
-    return $this->hasMany(Job::class);
+        return $this->hasMany(Job::class);
     }
 }
 

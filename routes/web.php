@@ -8,8 +8,9 @@ use App\Http\Controllers\HomeController;
 
 use App\Http\Controllers\auth\RegisterController;
 use App\Http\Controllers\auth\LoginController;
-
+use App\Http\Controllers\DashBoardController;
 use App\Http\Middleware\LogRequest;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home')->middleware(LogRequest::class);
 
@@ -25,17 +26,22 @@ Route::resource('jobs', JobController::class)->except(['create', 'edit', 'destro
 
 
 
-Route::resource('jobs', JobController::class); // /jobs
+// Route::resource('jobs', JobController::class); // /jobs
+
 Route::get('/jobs/{id}/save', [JobController::class, 'save'])->name('jobs.save'); // /jobs/:id
 
 // auth routes >--------------------------------------------------------------------------
 // Route::get('/register', [RegisterController::class, 'register'])->name('register')->middleware('guest')->middleware('guest');; 
 Route::middleware('guest')->group(function () {
-    Route::get('/register', [RegisterController::class, 'register'])->name('register');
-    Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
-    Route::get('/login', [LoginController::class, 'login'])->name('login');
-    Route::post('/login', [LoginController::class, 'authenticate'])->name('login.authenticate');
-  });
+  Route::get('/register', [RegisterController::class, 'register'])->name('register');
+  Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
+  Route::get('/login', [LoginController::class, 'login'])->name('login');
+  Route::post('/login', [LoginController::class, 'authenticate'])->name('login.authenticate');
+});
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
+Route::get('/dashboard', [DashBoardController::class, 'index'])->name('dashboard')->middleware('auth');
+
+
+Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
 // add admin routes --

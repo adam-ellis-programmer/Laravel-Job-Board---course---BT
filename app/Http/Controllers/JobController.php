@@ -34,10 +34,12 @@ class JobController extends Controller
 
         // @desc  Show all job listings
         // @route GET /jobs 
-        $jobs = Job::all();
+        // $jobs = Job::all();
+        // $jobs = Job::simplePaginate(3);
+        $jobs = Job::paginate(9);
 
         // return view('jobs/index', compact( 'jobs'));
-        return view('jobs/index')->with('jobs', $jobs);
+        return view('jobs.index')->with('jobs', $jobs);
     }
 
     // @desc  create job
@@ -222,6 +224,11 @@ class JobController extends Controller
 
         // Delete the job
         $job->delete();
+
+        // Check if the request came from the dashboard page
+        if (request()->query('from') === 'dashboard') {
+            return redirect()->route('dashboard')->with('success', 'Job listing deleted successfully!');
+        }
 
         return redirect()->route('jobs.index')->with('success', 'Job listing deleted successfully!');
     }

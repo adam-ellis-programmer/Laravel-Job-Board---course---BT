@@ -20,7 +20,6 @@
   @endif
 
     <main class="container mx-auto p-4 mt-4">
-
        <!-- Display alert messages -->
           @if (session('success'))
           <x-alert type="success" message="{{ session('success') }}" timeOut="2000" />
