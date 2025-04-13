@@ -12,6 +12,10 @@ use App\Http\Controllers\DashBoardController;
 use App\Http\Middleware\LogRequest;
 use App\Http\Controllers\ProfileController;
 
+use App\Http\Controllers\BookmarkController;
+
+use App\Http\Controllers\ApplicantController;
+
 Route::get('/', [HomeController::class, 'index'])->name('home')->middleware(LogRequest::class);
 
 // seperate route to jobs
@@ -44,4 +48,17 @@ Route::get('/dashboard', [DashBoardController::class, 'index'])->name('dashboard
 
 
 Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update')->middleware('auth');
+
+
+Route::middleware('auth')->group(function () {
+  // index, store, destroy methods
+  Route::get('/bookmarks', [BookmarkController::class, 'index'])->name('bookmarks.index');
+  Route::post('/bookmarks/{job}', [BookmarkController::class, 'store'])->name('bookmarks.store');
+  Route::delete('/bookmarks/{job}', [BookmarkController::class, 'destroy'])->name('bookmarks.destroy');
+});
+
+// store method / named applicant.store
+Route::post('/jobs/{job}/apply', [ApplicantController::class, 'store'])->name('applicant.store');
+
 // add admin routes --
+

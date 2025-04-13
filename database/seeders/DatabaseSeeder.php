@@ -16,14 +16,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Truncate tables == CLEAR ALL DATA before we seed
+        // Truncate tables -- clear tables first
         DB::table('job_listings')->truncate();
         DB::table('users')->truncate();
+        DB::table('job_user_bookmarks')->truncate();
+        DB::table('applicants')->truncate();
 
-        //  What $this->call() does is run another seeder class from within the current seeder. 
-        // Selectively run certain seeders when needed
-        $this->call(TestUserSeeder::class); // Add this line
+        // then seed
+        $this->call(TestUserSeeder::class);
         $this->call(RandomUserSeeder::class);
         $this->call(JobSeeder::class);
+        $this->call(BookmarkSeeder::class);
     }
 }
