@@ -34,8 +34,8 @@ class Applicant extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function applicants(): HasMany
-    {
-        return $this->hasMany(Applicant::class);
-    }
+    // public function applicants(): HasMany
+    // {
+    //     return $this->hasMany(Applicant::class);
+    // }
 }

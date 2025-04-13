@@ -60,5 +60,8 @@ Route::middleware('auth')->group(function () {
 // store method / named applicant.store
 Route::post('/jobs/{job}/apply', [ApplicantController::class, 'store'])->name('applicant.store');
 
-// add admin routes --
 
+Route::delete('/applicants/{applicant}', [ApplicantController::class, 'destroy'])->name('applicants.destroy')->middleware('auth');
+
+
+// add admin routes --

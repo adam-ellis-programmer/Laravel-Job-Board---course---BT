@@ -17,9 +17,10 @@ class DashBoardController extends Controller
         $user = Auth::user();
 
         // Get all job listings for the authenticated user
-        $jobs = Job::where('user_id', $user->id)->get();
+        // because we have a relationship to the applicants they will be on the jobs variable 
+        $jobs = Job::where('user_id', $user->id)->with('applicants')->get();
 
-        // dd($jobs);
+        // dd($jobs); 
 
         return view('dashboard.index', compact('user', 'jobs'));
     }
