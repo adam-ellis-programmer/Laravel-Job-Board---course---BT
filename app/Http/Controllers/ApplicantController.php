@@ -8,12 +8,18 @@ use App\Models\Job;
 use App\Models\Applicant;
 use Illuminate\Http\RedirectResponse;
 
+use App\Mail\JobApplied;
+use Illuminate\Support\Facades\Mail;
+
+
+
 class ApplicantController extends Controller
 {
     // @desc   Store a new job application
     // @route  POST /jobs/{job}/apply
     //  Job $job -> model binding == we get access to the whole job object
     // not just the id 
+    // Job is being passd in using model binding
     public function store(Request $request, Job $job): RedirectResponse
     {
 
@@ -53,6 +59,12 @@ class ApplicantController extends Controller
         $application->job_id = $job->id;
         $application->user_id = auth()->id();
         $application->save();
+
+        // Send email to owner 
+        // Using the mail facade
+        // We have relationship between job and user we can use $job->user->email
+        // pass data to the construct function
+        Mail::to($job->user->email)->send(new JobApplied($application, $job));
 
         return redirect()->back()->with('success', 'Your application has been submitted!');
     }
