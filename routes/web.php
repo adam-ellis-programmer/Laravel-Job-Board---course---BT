@@ -15,8 +15,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookmarkController;
 
 use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\GeocodeController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home')->middleware(LogRequest::class);
+// place here as we do not want search to be an id 
+// change the url jobs/mysearch as we need 
+Route::get('/jobs/mysearch/', [JobController::class, 'search'])->name('jobs.search');
 
 // seperate route to jobs
 // Route::get('/', [HomeController::class, 'index'])->name('home')->middleware('auth');
@@ -63,5 +67,8 @@ Route::post('/jobs/{job}/apply', [ApplicantController::class, 'store'])->name('a
 
 Route::delete('/applicants/{applicant}', [ApplicantController::class, 'destroy'])->name('applicants.destroy')->middleware('auth');
 
+
+// PROXY ENDPOINT 
+Route::get('/geocode', [GeocodeController::class, 'geocode']);
 
 // add admin routes --

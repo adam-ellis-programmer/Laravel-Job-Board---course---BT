@@ -232,4 +232,43 @@ class JobController extends Controller
 
         return redirect()->route('jobs.index')->with('success', 'Job listing deleted successfully!');
     }
+
+
+
+    //  ===========================
+    // SEARCH 
+    //  ===========================
+
+    public function search(Request $request): View
+    {
+
+        $keywords = strtolower($request->input('keywords'));
+        $location = strtolower($request->input('location'));
+        // dd($keywords, $location);
+
+        // make query builder
+        $query = Job::query();
+        // laravel: ['%' . $keywords . '%'] must always be an array containing the values to bind to those placeholders.
+        if ($keywords) {
+            // search multiple fields in the database
+            $query->where(function ($q) use ($keywords) {
+                $q->whereRaw('LOWER(title) like ?', ['%' . $keywords . '%'])
+                    ->orWhereRaw('LOWER(description) like ?', ['%' . $keywords . '%'])
+                    ->orWhereRaw('LOWER(tags) like ?', ['%' . $keywords . '%']);
+            });
+        }
+
+        if ($location) {
+            $query->where(function ($q) use ($location) {
+                $q->whereRaw('LOWER(address) like ?', ['%' . $location . '%'])
+                    ->orWhereRaw('LOWER(city) like ?', ['%' . $location . '%'])
+                    ->orWhereRaw('LOWER(state) like ?', ['%' . $location . '%'])
+                    ->orWhereRaw('LOWER(zipcode) like ?', ['%' . $location . '%']);
+            });
+        }
+
+        $jobs = $query->paginate(12);
+
+        return view('jobs.index')->with('jobs', $jobs);
+    }
 }
